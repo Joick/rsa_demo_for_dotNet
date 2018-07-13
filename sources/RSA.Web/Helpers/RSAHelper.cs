@@ -22,9 +22,9 @@ namespace RSA.Web.Helpers
 
         private static RSAKeys _rsakeys = new RSAKeys();
 
-        //设置[公钥私钥]文件路径
-        private const string privateKeyPath = @"d:\\PrivateKey.xml";
-        private const string publicKeyPath = @"d:\\PublicKey.xml";
+        // 设置[公钥私钥]文件路径
+        private static readonly string privateKeyPath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\rsa_key.pri";
+        private static readonly string publicKeyPath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\rsa_key.pub";
 
         public static string GetPublicKey()
         {
