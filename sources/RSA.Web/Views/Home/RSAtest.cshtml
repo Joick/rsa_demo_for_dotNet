@@ -1,0 +1,80 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="~/Scripts/jsencrypt.min.js"></script>
+    <script type="text/javascript">
+
+        var publicKey = undefined;
+
+        // 使用jsencrypt类库加密js方法，
+        function encryptRequest(reqUrl, originData) {
+
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(publicKey);
+
+            // ajax请求发送的数据对象
+            var sendData = encrypt.encrypt(JSON.stringify(originData));
+
+            // 这里向后台发送加密报文,不带参
+            $.post(reqUrl, sendData, function (rtData) {
+                console.info(rtData);
+            });
+
+        }
+
+        $(function () {
+
+            init();
+
+            $('#testme').click(function () {
+
+                var newdata = {};
+                var detail = {};
+                detail.flag = 1;
+
+                newdata.login_account = $('#username').val();
+                newdata.login_password = $('#passwd').val();
+                newdata.detail = detail;
+
+                encryptRequest('/api/demo/DoDecryptNReturn', newdata);
+
+            });
+        });
+
+        function init() {
+            $.ajax({
+                url: '/api/demo/QueryRsaPublicKey',
+                type: 'GET',
+                success: function (data) {
+                    publicKey = data.data;
+                    $('#pubkey').html(publicKey);
+                },
+                error: function (xhr) {
+                    console.error('出错了');
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <form id="form1">
+        <div>
+            <label for="pubkey">Public Key</label><br />
+            <textarea id="pubkey" rows="15" cols="65"></textarea><br />
+            <label for="input">Text to encrypt:</label><br />
+            name:<input id="username" name="username" type="text" /><br />
+            password:<input id="passwd" name="passwd" type="password" /><br />
+            <input id="testme" type="button" value="submit" /><br />
+        </div>
+    </form>
+</body>
+</html>
