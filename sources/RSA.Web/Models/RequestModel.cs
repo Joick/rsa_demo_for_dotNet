@@ -1,4 +1,5 @@
 ﻿using RSA.Web.Helpers;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace RSA.Web.Models
@@ -51,5 +52,13 @@ namespace RSA.Web.Models
         public string code { get; set; } = "000";
         public string message { get; set; } = "success";
         public object data { get; set; }
+    }
+
+    [DataContract]
+    public class RequiredRequestTestModel
+    {
+        [Required]
+        [DataMember(Name="account")]
+        public string Name { get; set; }
     }
 }

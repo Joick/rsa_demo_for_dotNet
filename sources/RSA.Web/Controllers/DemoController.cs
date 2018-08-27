@@ -25,5 +25,10 @@ namespace RSA.Web.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
+
+        public HttpResponseMessage RequiredTest(RequiredRequestTestModel reqModel)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
     }
 }
